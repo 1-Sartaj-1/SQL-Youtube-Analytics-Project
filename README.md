@@ -48,3 +48,5 @@ MODIFY COLUMN Video_views BIGINT,
 MODIFY COLUMN Likes BIGINT,
 MODIFY COLUMN Dislikes BIGINT;
 ```
+Now, with the data cleaning our table looks like this:
+![Alt text](Step-2.png)
