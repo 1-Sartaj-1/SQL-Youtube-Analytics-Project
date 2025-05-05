@@ -3,7 +3,9 @@
 ## Step 1: Database and Table Setup
 After creating the youtube_trends (or any name you prefer) database , we can begin by creating the table and defining the table's columns and their data types as follows: 
 ```sql
-CREATE TABLE Youtube_data (`Rank` INT,
+CREATE TABLE Youtube_data (
+video_id INT PRIMARY KEY AUTO_INCREMENT,
+`Rank` INT,
 Video TEXT, 
 Video_views VARCHAR(20),
 Likes VARCHAR(20),
@@ -50,3 +52,20 @@ MODIFY COLUMN Dislikes BIGINT;
 ```
 Now, with the data cleaning our table looks like this:
 ![Alt text](Step-2.png)
+
+## Step 3: Exploratory Data Analysis 
+Let's begin with looking at rank and see if we have all the 1000 videos as the csv file says.
+```sql
+SELECT COUNT(`Rank`) AS total_videos 
+FROM youtube_data;
+```
+![Alt text](count-rank.png)
+
+This could mean that we're missing a rank or might have duplicate ranks. Also, looking at however to be sure let's check:
+```sql
+SELECT `Rank`, COUNT(*)
+FROM youtube_data
+GROUP BY `Rank`
+HAVING COUNT(*) > 1;
+```
+It gives no output, which means there are no duplicates. Hence, we can proceed to next step with 999 rows.
