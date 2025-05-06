@@ -179,13 +179,13 @@ Further, to find all videos published in 2025 that have achieved at least 1 mill
 WITH vid_year AS
 (
 SELECT Video_views, Published
-FROM Youtube_Analytics.Youtube_data
+FROM Youtube_data
 WHERE Published = 2025
 ),
 top_video AS 
 (
 SELECT Video_views, Video
-FROM Youtube_Analytics.Youtube_data
+FROM Youtube_data
 WHERE Video_views >= 1000000
 )
 SELECT * 
@@ -215,7 +215,7 @@ DELIMITER $$
 CREATE PROCEDURE extract_video_rank(video_rank INT)
 BEGIN
 SELECT *
-FROM Youtube_Analytics.Youtube_data
+FROM Youtube_data
 WHERE `Rank` = video_rank;
 END $$
 DELIMITER ;
