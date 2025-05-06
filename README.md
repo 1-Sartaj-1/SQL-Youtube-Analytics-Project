@@ -1,6 +1,6 @@
 # Welcome to my Youtube Data Analytics Project!!!
 
-Here, we'll use MySQL to look at data from the top-1000-trending-youtube-videos.csv file and see what we can find out. We'll go through setup, cleaning, and analysis, using SQL features like:
+We'll use MySQL to look at data from the top-1000-trending-youtube-videos.csv file (which you can find above!) and see what we can find out. We'll go through setup, cleaning, and analysis, using SQL features like:
 
 Setup: **CREATE TABLE, PRIMARY KEY, AUTO_INCREMENT, INT, TEXT, VARCHAR, BIGINT**.
 
@@ -222,12 +222,12 @@ DELIMITER ;
 ```
 After executing this query, we'll have a new procedure stored under Youtube_Analytics database named as **extract_video_rank**.
 
-##Conclusion
-So we covered everything mentioned in the intro - setting up the table, cleaning the data, exploring with aggregates and grouping, and using advanced SQL like Window Functions, CTEs, CASE, and Stored Procedures to analyze the YouTube data in MySQL. Hope you enjoyed going through this project as much as me!!
-
 ![Alt text](stored_proc.png)
 
 We can use this procedure anytime we want by using the CALL clause.
 
 ![Alt text](call_store_proc.png)
+
+##Conclusion
+So we covered everything mentioned in the intro - setting up the table, cleaning the data, exploring with aggregates and grouping, and using advanced SQL like Window Functions, CTEs, CASE, and Stored Procedures to analyze the YouTube data in MySQL. Hope you enjoyed going through this project as much as me!!
 
