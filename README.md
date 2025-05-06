@@ -228,6 +228,6 @@ We can use this procedure anytime we want by using the CALL clause.
 
 ![Alt text](call_store_proc.png)
 
-##Conclusion
-So we covered everything mentioned in the intro - setting up the table, cleaning the data, exploring with aggregates and grouping, and using advanced SQL like Window Functions, CTEs, CASE, and Stored Procedures to analyze the YouTube data in MySQL. Hope you enjoyed going through this project as much as me!!
+## Conclusion
+So we covered everything mentioned in the intro - setting up the table, cleaning the data, exploring with aggregates and grouping, and using advanced SQL like Window Functions, CTEs, CASE, and Stored Procedures to analyze the YouTube data in MySQL. I hope you learnt something and enjoyed going through this project as much as me!!
 
