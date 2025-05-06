@@ -144,5 +144,49 @@ ORDER BY Published DESC;
 ```
 ![Alt text](publish.png)
 
-Some interesting finds from the exploration are:
-1.
+## Step 4: Advanced SQL Techniques for Deeper Insights
+If we want to see the average likes of the videos per category, we can use a window function as follows:
+```sql
+SELECT Category, Video, Video_views, AVG(Likes) OVER(PARTITION BY Category ) AS avg_likes
+FROM Youtube_data
+WHERE Category IS NOT NULL
+ORDER BY Category, Video_views DESC;
+```
+![Alt text](Window_function.png)
+
+Further, to find all videos published in 2025 that have achieved at least 1 million views, we can use a CTE(Common table Expression) and compare the tables using JOIN as follows:
+```sql
+WITH vid_year AS
+(
+SELECT Video_views, Published
+FROM Youtube_Analytics.Youtube_data
+WHERE Published = 2025
+),
+top_video AS 
+(
+SELECT Video_views, Video
+FROM Youtube_Analytics.Youtube_data
+WHERE Video_views >= 1000000
+)
+SELECT * 
+FROM vid_year
+JOIN top_video 
+ON vid_year.Video_views = top_video.Video_views
+ORDER BY vid_year.Video_views DESC;
+```
+![Alt text](CTE.png)
+
+We can use CASE statements to see which videos with which animal were trending, dogs or cats?
+```sql
+SELECT Video, Video_views,  Category ,
+CASE
+	WHEN LOWER(Video) LIKE '%dog%' THEN 'Dog videos'
+    WHEN LOWER(Video) LIKE '%cat%' THEN 'Cat videos'
+    ELSE 'Other'
+END AS DogVsCat 
+FROM Youtube_data
+ORDER BY DogVsCat;
+```
+![Alt text](case.png)
+
+
