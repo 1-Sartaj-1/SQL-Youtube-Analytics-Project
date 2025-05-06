@@ -1,7 +1,17 @@
 # Welcome to my Youtube Data Analytics Project!!!
 
+Here, we'll use MySQL to look at data from the top-1000-trending-youtube-videos.csv file and see what we can find out. We'll go through setup, cleaning, and analysis, using SQL features like:
+
+Setup: **CREATE TABLE, PRIMARY KEY, AUTO_INCREMENT, INT, TEXT, VARCHAR, BIGINT**.
+
+Cleaning: **UPDATE, SET, TRIM(), REPLACE(), ALTER TABLE MODIFY COLUMN**, handling **NULL**.
+
+Basic Analysis: **SELECT, WHERE, COUNT(), AVG(), MAX(), GROUP BY, HAVING, ORDER BY, LIMIT**.
+
+Advanced: **Window Functions (AVG() OVER, PARTITION BY), CTEs (WITH), JOIN, CASE WHEN/THEN/ELSE, LOWER(), LIKE, Stored Procedures (CREATE PROCEDURE, DELIMITER, CALL**).
+
 ## Step 1: Database and Table Setup
-After creating the youtube_trends (or any name you prefer) database , we can begin by creating the table and defining the table's columns and their data types as follows: 
+After creating the **Youtube_Analytics** (or any name you prefer) database , we can begin by creating the table (**Youtube_data** here)and defining the table's columns and their data types as follows: 
 ```sql
 CREATE TABLE Youtube_data (
 video_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -13,7 +23,7 @@ Dislikes VARCHAR(20),
 Category VARCHAR(50), 
 Published INT)
 ```
-Notice how we have backtics (`) when we define the Rank column, that is because RANK is a reserved keyword. Also, notice that even though we have data type for Video_views, likes, dislikes to be VARCHAR(20) even though they represent numeric values. The reason for that is the commas separating the numbers, hence for smooth import of the CSV data into the table, we need to be careful of these things. Therefore, it's really important to take a look at the raw csv file to see what kind of data does the columns contain.
+Notice how we have backtics (`) when we define the Rank column, that is because **RANK** is a reserved keyword. Also, notice that even though we have data type for Video_views, likes, dislikes to be VARCHAR(20) even though they represent numeric values. The reason for that is the commas separating the numbers, hence for smooth import of the CSV data into the table, we need to be careful of these things. Therefore, it's really important to take a look at the raw csv file to see what kind of data does the columns contain.
 
 ## Step 2: Data Cleaning and Preparation
 Firstly, we need to handle leading and trailing whitespace, so we can do the following:
@@ -26,8 +36,8 @@ SET
     Dislikes = TRIM(Dislikes),
     Category = TRIM(Category);
 ```
-Notice how we've only used TRIM() on String data types such as TEXT and VARCHAR only.
-After trimming, if any values were originally blank or just spaces, they might now be empty strings (''). We can set them to NULL (representing missing data) or 0. We'll use NULL here:
+Notice how we've only used **TRIM()** on String data types such as TEXT and VARCHAR only.
+After trimming, if any values were originally blank or just spaces, they might now be empty strings (''). We can set them to **NULL** (representing missing data) or 0. We'll use NULL here:
 ```sql
 UPDATE Youtube_data SET Video = NULL WHERE Video = '';
 UPDATE Youtube_data SET Video_views = NULL WHERE Video_views = '';
@@ -35,7 +45,7 @@ UPDATE Youtube_data SET Likes = NULL WHERE Likes = '';
 UPDATE Youtube_data SET Dislikes = NULL WHERE Dislikes = '';
 UPDATE Youtube_data SET Category = NULL WHERE Category = '';
 ```
-Now, we need to handle the commas within the string columns (Video_views, Likes, Dislikes) and convert them to BIGINT for optimal calculation.
+Now, we need to handle the commas within the string columns (Video_views, Likes, Dislikes) and convert them to **BIGINT** for optimal calculation.
 ```sql
 UPDATE Youtube_data
 SET
@@ -43,7 +53,7 @@ SET
     Likes = REPLACE(Likes, ',', ''),
     Dislikes = REPLACE(Dislikes, ',', '');
 ```
-Next, we will convert the VARCHAR data type to BIGINT data type since we've trimmed the whitespace and replaced the commas within the values.
+Next, we will convert the **VARCHAR** data type to **BIGINT** data type since we've trimmed the whitespace and replaced the commas within the values.
 ```sql
 ALTER TABLE Youtube_data
 MODIFY COLUMN Video_views BIGINT,
@@ -63,7 +73,7 @@ FROM youtube_data;
 ```
 ![Alt text](count_rank.png)
 
-This could mean that we're missing a rank or might have duplicate ranks. Also, if we look at our primary key column, video_id, we can see that the total number of rows is 999. 
+This could mean that we're missing a rank or might have duplicate ranks. Also, if we look at our primary key column, **video_id**, we can see that the total number of rows is 999. 
 
 ![Alt text](count_rank_2.png)
 
@@ -210,9 +220,14 @@ WHERE `Rank` = video_rank;
 END $$
 DELIMITER ;
 ```
-After executing this query, we'll have a new procedure stored under Youtube_Analytics database named as extract_video_rank.
+After executing this query, we'll have a new procedure stored under Youtube_Analytics database named as **extract_video_rank**.
+
+##Conclusion
+So we covered everything mentioned in the intro - setting up the table, cleaning the data, exploring with aggregates and grouping, and using advanced SQL like Window Functions, CTEs, CASE, and Stored Procedures to analyze the YouTube data in MySQL. Hope you enjoyed going through this project as much as me!!
+
 ![Alt text](stored_proc.png)
 
 We can use this procedure anytime we want by using the CALL clause.
+
 ![Alt text](call_store_proc.png)
 
