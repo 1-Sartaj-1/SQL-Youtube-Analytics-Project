@@ -180,7 +180,7 @@ We can use CASE statements to see which videos with which animal were trending, 
 ```sql
 SELECT Video, Video_views,  Category ,
 CASE
-	WHEN LOWER(Video) LIKE '%dog%' THEN 'Dog videos'
+    WHEN LOWER(Video) LIKE '%dog%' THEN 'Dog videos'
     WHEN LOWER(Video) LIKE '%cat%' THEN 'Cat videos'
     ELSE 'Other'
 END AS DogVsCat 
@@ -189,4 +189,20 @@ ORDER BY DogVsCat;
 ```
 ![Alt text](case.png)
 
+Also, if we want a quick method to lookup a Rank and the related details of that Rank, we can create a procedure and store it in the database itself as follows:
+```sql
+DELIMITER $$
+CREATE PROCEDURE extract_video_rank(video_rank INT)
+BEGIN
+SELECT *
+FROM Youtube_Analytics.Youtube_data
+WHERE `Rank` = video_rank;
+END $$
+DELIMITER ;
+```
+After executing this query, we'll have a new procedure stored under Youtube_Analytics database.
+![Alt text](stored_proc.png)
+
+We can use this procedure anytime we want by using the CALL clause.
+![Alt text](call_store_proc.png)
 
