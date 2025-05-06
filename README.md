@@ -54,6 +54,8 @@ Now, with the data cleaning our table looks like this:
 ![Alt text](Step-2.png)
 
 ## Step 3: Exploratory Data Analysis 
+Now that our data is clean and properly formatted, let's dive in and explore!
+
 Let's begin with looking at rank and see if we have all the 1000 videos as the csv file says.
 ```sql
 SELECT COUNT(`Rank`) AS total_videos 
@@ -61,7 +63,7 @@ FROM youtube_data;
 ```
 ![Alt text](count_rank.png)
 
-This could mean that we're missing a rank or might have duplicate ranks. Also, if we look at our primary key column video_id, we can see that the total number of rows is 999. 
+This could mean that we're missing a rank or might have duplicate ranks. Also, if we look at our primary key column, video_id, we can see that the total number of rows is 999. 
 
 ![Alt text](count_rank_2.png)
 
@@ -72,15 +74,17 @@ FROM youtube_data
 GROUP BY `Rank`
 HAVING COUNT(*) > 1;
 ```
-It gives no output, which means there are no duplicates. Hence, we can proceed to next step with 999 rows.
+It gives us no output, which means there are no duplicates. Hence, we can proceed to next step with 999 rows confidently.
 
-Now, let's move our attention towards the Category column. We can use GROUP BY to see how many categories do we have:
+Now, let's move our attention towards the Category column. 
+
+We can use GROUP BY to see how many categories do we have:
 ```sql
 SELECT Category 
 FROM youtube_data 
 GROUP BY Category;
 ```
-We can use the following queries to see the total number of videos in each category:
+We can use the following queries to see the total number of trending videos in each category:
 ```sql
 SELECT Category, COUNT(*) AS video_count
 FROM youtube_data
@@ -118,12 +122,12 @@ SELECT Category,
 MAX(Video_views) AS views
 FROM Youtube_data
 WHERE Category IS NOT NULL
-GROUP BY Category DESC
+GROUP BY Category
 ORDER BY views DESC;
 ```
 ![Alt text](cat_views.png)
 
-Next, we can see categories which got the most amount of average likes:
+Next, we can see categories which got the most amount of likes on average:
 ```sql
 SELECT Category, AVG(Likes) AS average_likes
 FROM Youtube_data
@@ -134,7 +138,7 @@ ORDER BY average_likes DESC;
 ```
 ![Alt text](cat_likes.png)
 
-Moving on to Publish column, we can see which years had how many videos uploaded and how many views did they get:
+Moving on to Publish column, let's see the total number of videos and their total views per publication year:
 ```sql
 SELECT Video_views, Published, COUNT(*) AS total_videos
 FROM Youtube_data
@@ -145,6 +149,8 @@ ORDER BY Published DESC;
 ![Alt text](publish.png)
 
 ## Step 4: Advanced SQL Techniques for Deeper Insights
+Let's leverage more powerful SQL features to extract even richer insights that might be harder to get with basic queries.
+
 If we want to see the average likes of the videos per category, we can use a window function as follows:
 ```sql
 SELECT Category, Video, Video_views, AVG(Likes) OVER(PARTITION BY Category ) AS avg_likes
@@ -200,7 +206,7 @@ WHERE `Rank` = video_rank;
 END $$
 DELIMITER ;
 ```
-After executing this query, we'll have a new procedure stored under Youtube_Analytics database.
+After executing this query, we'll have a new procedure stored under Youtube_Analytics database named as extract_video_rank.
 ![Alt text](stored_proc.png)
 
 We can use this procedure anytime we want by using the CALL clause.
