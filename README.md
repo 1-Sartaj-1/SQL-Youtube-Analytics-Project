@@ -174,25 +174,19 @@ ORDER BY Category, Video_views DESC;
 ```
 ![Alt text](Window_function.png)
 
-Further, to find all videos published in 2025 that have achieved at least 1 million views, we can use a CTE(Common table Expression) and compare the tables using JOIN as follows:
+Further, to show each video's title, its view count, and the total view count for its entire category, we can use a CTE(Common table Expression) and compare the tables using JOIN as follows:
 ```sql
-WITH vid_year AS
+WITH Cat_Tot_Views AS
 (
-SELECT Video_views, Published
+SELECT Category, SUM(Video_views) AS cat_views, COUNT(*) AS vid_num    
 FROM Youtube_data
-WHERE Published = 2025
-),
-top_video AS 
-(
-SELECT Video_views, Video
-FROM Youtube_data
-WHERE Video_views >= 1000000
+WHERE Category IS NOT NULL AND Video_views IS NOT NULL 
+GROUP BY Category 
 )
-SELECT * 
-FROM vid_year
-JOIN top_video 
-ON vid_year.Video_views = top_video.Video_views
-ORDER BY vid_year.Video_views DESC;
+SELECT Youtube_data.Video, Youtube_data.Category, Cat_Tot_Views.cat_views, Cat_Tot_Views.vid_num 
+FROM Youtube_data
+INNER JOIN Cat_Tot_Views ON Youtube_data.Category = Cat_Tot_Views.Category 
+ORDER BY Youtube_data.Category, Youtube_data.Video_views DESC; 
 ```
 ![Alt text](CTE.png)
 
