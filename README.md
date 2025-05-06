@@ -78,13 +78,13 @@ It gives us no output, which means there are no duplicates. Hence, we can procee
 
 Now, let's move our attention towards the Category column. 
 
-We can use GROUP BY to see how many categories do we have:
+We can use GROUP BY to see how many unique categories do we have:
 ```sql
 SELECT Category 
 FROM youtube_data 
 GROUP BY Category;
 ```
-We can use the following queries to see the total number of trending videos in each category:
+We can use the following query to see the total number of trending videos in each category:
 ```sql
 SELECT Category, COUNT(*) AS video_count
 FROM youtube_data
@@ -92,6 +92,8 @@ GROUP BY Category
 ORDER BY video_count DESC;
 ```
 ![Alt text](category_res.png)
+
+The result highlight 'Music' and 'People & Blogs' as the most frequent categories in this trending dataset.
 
 Now, we can see statistics such as top five videos with maximum number of likes, dislikes and views:
 ```sql
@@ -116,7 +118,9 @@ LIMIT 5;
 ```
 ![Alt text](likes.png)
 
-We can see which category has the most views by the following query. 
+Music videos and major global artists appear frequently among the top performers in views, likes as well as dislikes.
+
+We can see the peak view count achieved within each category by the following query. 
 ```sql
 SELECT Category, 
 MAX(Video_views) AS views
@@ -127,7 +131,7 @@ ORDER BY views DESC;
 ```
 ![Alt text](cat_views.png)
 
-Next, we can see categories which got the most amount of likes on average:
+Next, we can see categories which got the most amount of likes on average. We will use the HAVING clause because it filters the groups based on the calculated average after aggregation.
 ```sql
 SELECT Category, AVG(Likes) AS average_likes
 FROM Youtube_data
@@ -140,7 +144,7 @@ ORDER BY average_likes DESC;
 
 Moving on to Publish column, let's see the total number of videos and their total views per publication year:
 ```sql
-SELECT Video_views, Published, COUNT(*) AS total_videos
+SELECT Published, COUNT(*) AS total_videos, SUM(Video_views) AS total_views_for_year 
 FROM Youtube_data
 WHERE Published IS NOT NULL
 GROUP BY Published
